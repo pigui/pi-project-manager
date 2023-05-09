@@ -8,12 +8,14 @@ import { ApolloDriver } from '@nestjs/apollo';
 import { join } from 'path';
 import { UsersModule } from './users/users.module';
 import { ConfigModule } from '@nestjs/config';
+import { PubSubModule } from './pub-sub/pub-sub.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     GraphQLModule.forRoot({
       driver: ApolloDriver,
+      installSubscriptionHandlers: true,
       typePaths: ['./**/*.graphql'],
       definitions: {
         path: join(process.cwd(), 'libs/common/graphql/src/lib/graphql.ts'),
