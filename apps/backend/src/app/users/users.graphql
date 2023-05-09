@@ -1,0 +1,16 @@
+scalar Date
+
+type User {
+    _id: String!
+    email: String!
+    password: String
+    googleId: String
+    firstName: String!
+    lastName: String!
+    createdAt: Date!
+    updatedAt: Date!
+}
+
+type Query {
+    findUsers: [User!]
+}

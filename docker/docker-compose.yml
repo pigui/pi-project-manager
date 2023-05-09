@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  mongodb:
+    image: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - mongo
+
+  redis:
+    image: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - redis
+
+volumes:
+  mongodb_data:
+  redis_data:
+
+networks:
+  mongo:
+  redis:
