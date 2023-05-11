@@ -1,1 +1,3 @@
-<pi-nx-welcome></pi-nx-welcome> <router-outlet></router-outlet>
+<router-outlet></router-outlet>
+<pi-full-loading [loading]="generalService.fullLoading$ | async"></pi-full-loading>
+{{ generalService.fullLoading$ | async }}

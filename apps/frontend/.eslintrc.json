@@ -20,6 +20,11 @@
             "prefix": "pi",
             "style": "kebab-case"
           }
+        ],
+        "@angular-eslint/component-class-suffix": [
+          "error",{
+            "suffix": ["Layout", "Dialog"]
+          }
         ]
       },
       "extends": [
