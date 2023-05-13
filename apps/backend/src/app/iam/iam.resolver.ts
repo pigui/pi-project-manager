@@ -12,7 +12,7 @@ export class IamResolver {
   }
 
   @Mutation('signIn')
-  signIn(@Args('signIn') signInInput: SignInInput) {
+  signIn(@Args('signInInput') signInInput: SignInInput) {
     return this.iamService.signIn(signInInput);
   }
 }

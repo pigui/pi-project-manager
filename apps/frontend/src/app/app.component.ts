@@ -10,7 +10,7 @@ import { NxWelcomeComponent } from './nx-welcome.component';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpLink } from 'apollo-angular/http';
 import { FullLoadingComponent } from '@frontend/ui';
-import { GeneralModule, GeneralService } from '@frontend/services';
+import { AuthModule, GeneralModule, GeneralService } from '@frontend/services';
 
 import { CommonModule } from '@angular/common';
 import { APOLLO_OPTIONS, Apollo, ApolloModule } from 'apollo-angular';
@@ -30,6 +30,7 @@ import { getMainDefinition } from '@apollo/client/utilities';
     GeneralModule,
     HttpClientModule,
     ApolloModule,
+    AuthModule,
   ],
   providers: [HttpLink],
   selector: 'pi-root',

@@ -8,12 +8,6 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
-  AuthService,
-  GeneralService,
-  SignInInput,
-  SignUpInput,
-} from '@frontend/services';
-import {
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
@@ -27,13 +21,14 @@ import {
   FormLabelComponent,
   InputDirective,
 } from '@frontend/ui';
-import { concatMap, take } from 'rxjs';
-import { plainToClass } from 'class-transformer';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { AuthService, GeneralService, SignInInput } from '@frontend/services';
 import { Router } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { plainToClass } from 'class-transformer';
+import { take } from 'rxjs';
 
 @Component({
-  selector: 'pi-sign-up',
+  selector: 'pi-sign-in',
   standalone: true,
   imports: [
     CommonModule,
@@ -46,19 +41,17 @@ import { Router } from '@angular/router';
     ButtonDirective,
     ButtonFieldComponent,
   ],
-  templateUrl: './sign-up.component.html',
+  templateUrl: './sign-in.component.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SignUpComponent implements OnInit {
+export class SignInComponent implements OnInit {
   form: FormGroup = this.fb.group({
-    firstName: ['', [Validators.required]],
-    lastName: ['', [Validators.required]],
     email: ['', [Validators.required, Validators.email]],
     password: ['', Validators.required],
   });
-
   destroyRef: DestroyRef = inject(DestroyRef);
+
   constructor(
     private readonly authService: AuthService,
     private readonly fb: FormBuilder,
@@ -78,24 +71,14 @@ export class SignUpComponent implements OnInit {
 
   onSubmit(): void {
     if (this.form.valid) {
-      const { email, firstName, lastName, password } = this.form.getRawValue();
-      const signUpInput: SignUpInput = plainToClass(SignUpInput, {
+      const { email, password } = this.form.getRawValue();
+      const signInInput: SignInInput = plainToClass(SignInInput, {
         email,
-        firstName,
-        lastName,
         password,
       });
-
       this.authService
-        .signUp(signUpInput)
-        .pipe(
-          take(1),
-          concatMap(() =>
-            this.authService.signIn(
-              plainToClass(SignInInput, { email, password })
-            )
-          )
-        )
+        .signIn(signInInput)
+        .pipe(take(1))
         .subscribe({
           next: (data) => {
             console.log(data);
@@ -107,7 +90,7 @@ export class SignUpComponent implements OnInit {
     }
   }
 
-  goSignIn(): void {
-    this.router.navigate(['sign-in']);
+  goSignUp(): void {
+    this.router.navigate(['sign-up']);
   }
 }

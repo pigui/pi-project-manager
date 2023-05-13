@@ -17,6 +17,6 @@
     </pi-form-field>
     <pi-button-field>
         <button type="submit" piButton [disabled]="form.invalid">SIGN UP</button>
-        <button piButton buttonType="secondary">SIGN IN</button>
+        <button piButton buttonType="secondary" (click)="goSignIn()">SIGN IN</button>
     </pi-button-field>
 </pi-form>

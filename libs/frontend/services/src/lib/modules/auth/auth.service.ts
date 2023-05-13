@@ -1,19 +1,12 @@
 import { Injectable, Signal } from '@angular/core';
-import {
-  BehaviorSubject,
-  Observable,
-  catchError,
-  delay,
-  finalize,
-  tap,
-  throwError,
-} from 'rxjs';
+import { BehaviorSubject, Observable, catchError, tap, throwError } from 'rxjs';
 import { User } from '../../models';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Apollo, MutationResult } from 'apollo-angular';
-import { SignUpInput } from '../../inputs';
-import { SIGN_UP } from './graphql';
+import { SignInInput, SignUpInput } from '../../inputs';
+import { SIGN_IN, SIGN_UP } from './graphql';
 import { GraphqlTypes } from '@common/graphql';
+import { plainToClass } from 'class-transformer';
 
 class State {
   currentUser$: BehaviorSubject<User> = new BehaviorSubject(null);
@@ -95,7 +88,7 @@ export class AuthService {
   ): Observable<MutationResult<GraphqlTypes.User>> {
     this.setIsLoading(true);
     return this.apollo
-      .mutate<User, { signUpInput: SignUpInput }>({
+      .mutate<GraphqlTypes.User, { signUpInput: SignUpInput }>({
         mutation: SIGN_UP,
         variables: { signUpInput },
       })
@@ -104,6 +97,29 @@ export class AuthService {
         catchError((error) => {
           this.setIsLoading(false);
           return throwError(() => error);
+        })
+      );
+  }
+
+  signIn(
+    signInInput: SignInInput
+  ): Observable<MutationResult<GraphqlTypes.AccessToken>> {
+    this.setIsLoading(true);
+    return this.apollo
+      .mutate<GraphqlTypes.AccessToken, { signInInput: SignInInput }>({
+        mutation: SIGN_IN,
+        variables: { signInInput },
+      })
+      .pipe(
+        tap(() => this.setIsLoading(false)),
+        catchError((error) => {
+          this.setIsLoading(false);
+          return throwError(() => error);
+        }),
+        tap((response: MutationResult<GraphqlTypes.AccessToken>) => {
+          this.setAccessToken(response.data.accessToken);
+          this.setRefreshToken(response.data.refreshToken);
+          this.setCurrentUser(plainToClass(User, response.data.user));
         })
       );
   }

@@ -9,6 +9,7 @@ import { HANDLERS } from './cqrs';
 import { JwtModule } from '@nestjs/jwt';
 import jwtConfig from './config/jwt.config';
 import { ConfigModule } from '@nestjs/config';
+import { RefreshTokenIdsStorage } from './refresh-token-ids.storage';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { ConfigModule } from '@nestjs/config';
       provide: HashingService,
       useClass: BcryptService,
     },
+    RefreshTokenIdsStorage,
     ...HANDLERS,
   ],
   exports: [...HANDLERS],

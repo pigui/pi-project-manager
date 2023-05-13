@@ -11,9 +11,16 @@ export const publicRoutes: Routes = [
         pathMatch: 'full',
       },
       {
+        title: 'sign-up',
         path: 'sign-up',
         loadComponent: () =>
           import('./sign-up/sign-up.component').then((m) => m.SignUpComponent),
+      },
+      {
+        title: 'sign-ip',
+        path: 'sign-in',
+        loadComponent: () =>
+          import('./sign-in/sign-in.component').then((m) => m.SignInComponent),
       },
     ],
   },
