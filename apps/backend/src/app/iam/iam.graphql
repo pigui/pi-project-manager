@@ -16,8 +16,13 @@ type AccessToken {
     user: User!
 }
 
+input RefreshTokenInput {
+    refreshToken: String!
+}
+
 
 type Mutation {
     signIn(signInInput: SignInInput!): AccessToken!
     signUp(signUpInput: SignUpInput!): User!
+    refreshTokens(refreshTokenInput:RefreshTokenInput!): AccessToken!
 }

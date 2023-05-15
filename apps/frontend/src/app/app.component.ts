@@ -1,27 +1,35 @@
 import {
   Component,
+  DestroyRef,
   OnDestroy,
   OnInit,
   ViewEncapsulation,
   inject,
 } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { NxWelcomeComponent } from './nx-welcome.component';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpLink } from 'apollo-angular/http';
 import { FullLoadingComponent } from '@frontend/ui';
-import { AuthModule, GeneralModule, GeneralService } from '@frontend/services';
+import {
+  AuthModule,
+  GeneralModule,
+  GeneralService,
+  HashingModule,
+} from '@frontend/services';
 
 import { CommonModule } from '@angular/common';
-import { APOLLO_OPTIONS, Apollo, ApolloModule } from 'apollo-angular';
+import { Apollo, ApolloModule } from 'apollo-angular';
 import { InMemoryCache } from '@apollo/client/cache';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { split } from '@apollo/client/core';
 import { getMainDefinition } from '@apollo/client/utilities';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   standalone: true,
   imports: [
+    HashingModule,
     HttpClientModule,
     CommonModule,
     NxWelcomeComponent,
@@ -38,14 +46,15 @@ import { getMainDefinition } from '@apollo/client/utilities';
   styleUrls: ['./app.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit {
   title = 'frontend';
+  generalService: GeneralService = inject(GeneralService);
+  private readonly apollo: Apollo = inject(Apollo);
+  private readonly httpLink: HttpLink = inject(HttpLink);
+  private readonly router: Router = inject(Router);
+  private readonly destroyRef: DestroyRef = inject(DestroyRef);
 
-  constructor(
-    public readonly generalService: GeneralService,
-    private readonly apollo: Apollo,
-    private readonly httpLink: HttpLink
-  ) {
+  constructor() {
     const http = this.httpLink.create({
       uri: 'http://localhost:3000/graphql',
     });
@@ -71,7 +80,13 @@ export class AppComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit(): void {}
-
-  ngOnDestroy(): void {}
+  ngOnInit(): void {
+    this.router.events
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((event) => {
+        if (event instanceof NavigationEnd) {
+          this.generalService.setCurrentPage(event.url);
+        }
+      });
+  }
 }

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { SignInInput, SignUpInput } from './inputs';
 import { User } from '../users/schemas';
-import { SignUpCommand } from './cqrs/commands/impl';
+import { RefreshTokensCommand, SignUpCommand } from './cqrs/commands/impl';
 import { AccessToken } from './models';
 import { SignInCommand } from './cqrs/commands/impl/sign-in.command';
 
@@ -16,5 +16,9 @@ export class IamService {
 
   signIn(signInInput: SignInInput): Promise<AccessToken> {
     return this.commandBus.execute(new SignInCommand(signInInput));
+  }
+
+  refreshTokens(refreshToken: string): Promise<AccessToken> {
+    return this.commandBus.execute(new RefreshTokensCommand(refreshToken));
   }
 }

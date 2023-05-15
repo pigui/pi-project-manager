@@ -1,5 +1,5 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { SignInCommand } from '../impl/sign-in.command';
+import { SignInCommand } from '../impl';
 import { HashingService } from '../../../hashing/hashing.service';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';

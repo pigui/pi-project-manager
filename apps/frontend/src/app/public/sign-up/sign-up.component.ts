@@ -97,8 +97,8 @@ export class SignUpComponent implements OnInit {
           )
         )
         .subscribe({
-          next: (data) => {
-            console.log(data);
+          next: () => {
+            this.router.navigate(['home']);
           },
           error: (error) => {
             console.log(error);

@@ -1,0 +1,11 @@
+<div class="w-screen h-screen grid grid-cols-12">
+    <div class="w-full h-full bg-gradient-to-r from-primary-color to-secondary-color col-span-2">
+        <pi-private-navbar-header [user]="user"></pi-private-navbar-header>
+        <pi-private-navbar-menu></pi-private-navbar-menu>
+    </div>
+    <div class="w-full p-14 h-full col-auto">
+        <div class="container">
+            <ng-content></ng-content>
+        </div>
+    </div>
+</div>

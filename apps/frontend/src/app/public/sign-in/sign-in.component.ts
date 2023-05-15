@@ -80,8 +80,8 @@ export class SignInComponent implements OnInit {
         .signIn(signInInput)
         .pipe(take(1))
         .subscribe({
-          next: (data) => {
-            console.log(data);
+          next: () => {
+            this.router.navigate(['home']);
           },
           error: (error) => {
             console.log(error);

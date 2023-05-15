@@ -1,5 +1,12 @@
 import { Injectable, Signal } from '@angular/core';
-import { BehaviorSubject, Observable, catchError, tap, throwError } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  catchError,
+  map,
+  tap,
+  throwError,
+} from 'rxjs';
 import { User } from '../../models';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Apollo, MutationResult } from 'apollo-angular';
@@ -7,26 +14,58 @@ import { SignInInput, SignUpInput } from '../../inputs';
 import { SIGN_IN, SIGN_UP } from './graphql';
 import { GraphqlTypes } from '@common/graphql';
 import { plainToClass } from 'class-transformer';
+import { HashingService } from '../hashing/hashing.service';
+import { inject } from '@angular/core';
+
+const REFRESH_TOKEN = 'REFRESH_TOKEN';
+
+export interface SignIn {
+  signIn: GraphqlTypes.AccessToken;
+}
+
+export interface SignUp {
+  signUp: GraphqlTypes.User;
+}
 
 class State {
   currentUser$: BehaviorSubject<User> = new BehaviorSubject(null);
   isLoading$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   accessToken$: BehaviorSubject<string> = new BehaviorSubject(null);
   refreshToken$: BehaviorSubject<string> = new BehaviorSubject(null);
+
+  constructor(private readonly hashingService: HashingService) {
+    this.loadInitData();
+  }
+
+  private loadInitData(): void {
+    if (localStorage.getItem(REFRESH_TOKEN)) {
+      this.refreshToken$.next(
+        this.hashingService.decrypt(localStorage.getItem(REFRESH_TOKEN))
+      );
+    }
+  }
 }
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class AuthService {
-  private readonly state = new State();
+  private readonly apollo: Apollo = inject(Apollo);
+  private readonly hashingService: HashingService = inject(HashingService);
+  private readonly state = new State(this.hashingService);
 
   private get _currentUser$(): BehaviorSubject<User> {
     return this.state.currentUser$;
   }
 
-  get currentUser(): Observable<User> {
+  get currentUser$(): Observable<User> {
     return this._currentUser$.asObservable();
+  }
+
+  get isLogged$(): Observable<boolean> {
+    return this.currentUser$.pipe(map((user) => !!user));
+  }
+
+  get isLogged(): Signal<boolean> {
+    return toSignal(this.isLogged$);
   }
 
   private get _isLoading$(): BehaviorSubject<boolean> {
@@ -65,8 +104,6 @@ export class AuthService {
     return toSignal(this.refreshToken$);
   }
 
-  constructor(private readonly apollo: Apollo) {}
-
   setCurrentUser(user: User): void {
     this._currentUser$.next(user);
   }
@@ -80,15 +117,17 @@ export class AuthService {
   }
 
   setRefreshToken(refreshToken: string): void {
+    localStorage.setItem(
+      REFRESH_TOKEN,
+      this.hashingService.encrypt(refreshToken)
+    );
     this._resfreshToken$.next(refreshToken);
   }
 
-  signUp(
-    signUpInput: SignUpInput
-  ): Observable<MutationResult<GraphqlTypes.User>> {
+  signUp(signUpInput: SignUpInput): Observable<MutationResult<SignUp>> {
     this.setIsLoading(true);
     return this.apollo
-      .mutate<GraphqlTypes.User, { signUpInput: SignUpInput }>({
+      .mutate<SignUp, { signUpInput: SignUpInput }>({
         mutation: SIGN_UP,
         variables: { signUpInput },
       })
@@ -101,12 +140,10 @@ export class AuthService {
       );
   }
 
-  signIn(
-    signInInput: SignInInput
-  ): Observable<MutationResult<GraphqlTypes.AccessToken>> {
+  signIn(signInInput: SignInInput): Observable<MutationResult<SignIn>> {
     this.setIsLoading(true);
     return this.apollo
-      .mutate<GraphqlTypes.AccessToken, { signInInput: SignInInput }>({
+      .mutate<SignIn, { signInInput: SignInInput }>({
         mutation: SIGN_IN,
         variables: { signInInput },
       })
@@ -116,10 +153,12 @@ export class AuthService {
           this.setIsLoading(false);
           return throwError(() => error);
         }),
-        tap((response: MutationResult<GraphqlTypes.AccessToken>) => {
-          this.setAccessToken(response.data.accessToken);
-          this.setRefreshToken(response.data.refreshToken);
-          this.setCurrentUser(plainToClass(User, response.data.user));
+        tap((response) => {
+          this.setAccessToken(response.data.signIn.accessToken);
+          this.setRefreshToken(response.data.signIn.refreshToken);
+          this.setCurrentUser(
+            plainToClass(User, response.data.signIn.user, {})
+          );
         })
       );
   }

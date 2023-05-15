@@ -11,4 +11,9 @@ export const appRoutes: Route[] = [
     loadChildren: () =>
       import('./public/public.routes').then((r) => r.publicRoutes),
   },
+  {
+    path: '',
+    loadChildren: () =>
+      import('./private/private.routes').then((r) => r.privateRoutes),
+  },
 ];

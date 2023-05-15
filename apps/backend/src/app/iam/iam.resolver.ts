@@ -1,6 +1,6 @@
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { IamService } from './iam.service';
-import { SignInInput, SignUpInput } from './inputs';
+import { RefreshTokenInput, SignInInput, SignUpInput } from './inputs';
 
 @Resolver()
 export class IamResolver {
@@ -14,5 +14,12 @@ export class IamResolver {
   @Mutation('signIn')
   signIn(@Args('signInInput') signInInput: SignInInput) {
     return this.iamService.signIn(signInInput);
+  }
+
+  @Mutation('refreshTokens')
+  refreshTokens(
+    @Args('refreshTokenInput') { refreshToken }: RefreshTokenInput
+  ) {
+    return this.iamService.refreshTokens(refreshToken);
   }
 }

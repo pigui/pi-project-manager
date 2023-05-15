@@ -20,6 +20,10 @@ export interface SignUpInput {
     lastName: string;
 }
 
+export interface RefreshTokenInput {
+    refreshToken: string;
+}
+
 export interface AccessToken {
     accessToken: string;
     refreshToken: string;
@@ -29,6 +33,7 @@ export interface AccessToken {
 export interface IMutation {
     signIn(signInInput: SignInInput): AccessToken | Promise<AccessToken>;
     signUp(signUpInput: SignUpInput): User | Promise<User>;
+    refreshTokens(refreshTokenInput: RefreshTokenInput): AccessToken | Promise<AccessToken>;
 }
 
 export interface User {
