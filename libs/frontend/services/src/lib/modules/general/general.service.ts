@@ -26,7 +26,9 @@ class State {
   }
 }
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class GeneralService {
   private readonly hashingService: HashingService = inject(HashingService);
   private readonly state = new State(this.hashingService);

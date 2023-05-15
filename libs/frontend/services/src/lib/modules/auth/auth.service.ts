@@ -46,7 +46,7 @@ class State {
   }
 }
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly apollo: Apollo = inject(Apollo);
   private readonly hashingService: HashingService = inject(HashingService);

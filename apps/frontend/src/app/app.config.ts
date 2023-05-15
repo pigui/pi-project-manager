@@ -1,14 +1,62 @@
-import { ApplicationConfig } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import {
   provideRouter,
   withEnabledBlockingInitialNavigation,
 } from '@angular/router';
 import { appRoutes } from './app.routes';
-import { provideClientHydration } from '@angular/platform-browser';
+import {
+  BrowserModule,
+  provideClientHydration,
+} from '@angular/platform-browser';
+import { CryptoService, HashingService } from '@frontend/services';
+import { APOLLO_OPTIONS, Apollo, ApolloModule } from 'apollo-angular';
+import { HttpClientModule } from '@angular/common/http';
+import { HttpLink } from 'apollo-angular/http';
+import { InMemoryCache, split } from '@apollo/client/core';
+import { getMainDefinition } from '@apollo/client/utilities';
+import { WebSocketLink } from '@apollo/client/link/ws';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    importProvidersFrom(BrowserModule, ApolloModule, HttpClientModule),
     provideRouter(appRoutes, withEnabledBlockingInitialNavigation()),
     provideClientHydration(),
+    {
+      provide: APOLLO_OPTIONS,
+      useFactory(httpLink: HttpLink) {
+        const http = httpLink.create({
+          uri: 'http://localhost:3000/graphql',
+        });
+
+        // Create a WebSocket link:
+        const ws = new WebSocketLink({
+          uri: 'ws://localhost:3000/graphql',
+          options: {
+            reconnect: true,
+          },
+        });
+
+        // using the ability to split links, you can send data to each link
+        // depending on what kind of operation is being sent
+        const link = split(
+          // split based on operation type
+          ({ query }) => {
+            const { kind, operation }: any = getMainDefinition(query);
+            return (
+              kind === 'OperationDefinition' && operation === 'subscription'
+            );
+          },
+          ws,
+          http
+        );
+
+        return {
+          cache: new InMemoryCache(),
+          link,
+        };
+      },
+      deps: [HttpLink],
+    },
+    { provide: HashingService, useClass: CryptoService },
   ],
 };
