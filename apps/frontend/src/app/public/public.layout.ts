@@ -27,7 +27,7 @@ export class PublicLayout implements OnInit {
   }
 
   private clearAuth(): void {
-    this.authService.setAccessToken(null);
+    this.authService.setRefreshToken(null);
     this.authService.setCurrentUser(null);
   }
 }

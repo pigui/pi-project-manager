@@ -31,7 +31,7 @@ export const SIGN_IN = gql`
 `;
 
 export const REFRESH_TOKENS = gql`
-  mutation RefreshTokens($refreshTokenInput: RefreshTokensInput!) {
+  mutation RefreshTokens($refreshTokenInput: RefreshTokenInput!) {
     refreshTokens(refreshTokenInput: $refreshTokenInput) {
       accessToken
       refreshToken

@@ -1,5 +1,13 @@
 scalar Date
 
+input FindUserByIdInput {
+    _id: ID!
+}
+
+input FindUserByEmailInput {
+    email: String!
+}
+
 type User {
     _id: String!
     email: String!
@@ -13,4 +21,6 @@ type User {
 
 type Query {
     findUsers: [User!]
+    findUserById(findUserByIdInput: FindUserByIdInput!): User
+    findUserByEmail(findUserByEmailInput: FindUserByEmailInput!): User
 }

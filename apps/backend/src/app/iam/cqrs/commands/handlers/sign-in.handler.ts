@@ -1,4 +1,4 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
 import { SignInCommand } from '../impl';
 import { HashingService } from '../../../hashing/hashing.service';
 import { InjectModel } from '@nestjs/mongoose';
@@ -10,6 +10,7 @@ import { Inject, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AccessToken } from '../../../models';
 import { randomUUID } from 'crypto';
+import { LoginEvent, RefreshTokenCreatedEvent } from '../../events/impl';
 
 @CommandHandler(SignInCommand)
 export class SignInHandler implements ICommandHandler<SignInCommand> {
@@ -18,7 +19,8 @@ export class SignInHandler implements ICommandHandler<SignInCommand> {
     @InjectModel(User.name) private readonly userModel: Model<User>,
     @Inject(jwtConfig.KEY)
     private readonly jwtConfiguration: ConfigType<typeof jwtConfig>,
-    private readonly jwtService: JwtService
+    private readonly jwtService: JwtService,
+    private readonly eventBus: EventBus
   ) {}
   async execute({ signInInput }: SignInCommand): Promise<AccessToken> {
     const { email, password } = signInInput;
@@ -57,7 +59,10 @@ export class SignInHandler implements ICommandHandler<SignInCommand> {
         }
       ),
     ]);
-
+    this.eventBus.publish(
+      new RefreshTokenCreatedEvent(user._id.toString(), refreshTokenId)
+    );
+    this.eventBus.publish(new LoginEvent(user._id.toString()));
     const accToken: AccessToken = new AccessToken();
     accToken.user = user;
     accToken.accessToken = accessToken;

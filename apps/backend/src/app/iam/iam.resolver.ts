@@ -1,10 +1,19 @@
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Resolver, Subscription } from '@nestjs/graphql';
 import { IamService } from './iam.service';
-import { RefreshTokenInput, SignInInput, SignUpInput } from './inputs';
+import {
+  LogoutInput,
+  RefreshTokenInput,
+  SignInInput,
+  SignUpInput,
+} from './inputs';
+import { PubSub } from 'graphql-subscriptions';
 
 @Resolver()
 export class IamResolver {
-  constructor(private readonly iamService: IamService) {}
+  constructor(
+    private readonly iamService: IamService,
+    private readonly pubSub: PubSub
+  ) {}
 
   @Mutation('signUp')
   signUp(@Args('signUpInput') signUpInput: SignUpInput) {
@@ -21,5 +30,25 @@ export class IamResolver {
     @Args('refreshTokenInput') { refreshToken }: RefreshTokenInput
   ) {
     return this.iamService.refreshTokens(refreshToken);
+  }
+
+  @Mutation('logout')
+  logout(@Args('logoutInput') { userId }: LogoutInput) {
+    return this.iamService.logout(userId);
+  }
+
+  @Subscription('userLogout')
+  userLogout() {
+    return this.pubSub.asyncIterator('LOGOUT');
+  }
+
+  @Subscription('userLogin')
+  userLogin() {
+    return this.pubSub.asyncIterator('LOGIN');
+  }
+
+  @Subscription('userCreated')
+  userCreated() {
+    return this.pubSub.asyncIterator('USER_CREATED');
   }
 }

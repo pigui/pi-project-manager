@@ -37,19 +37,24 @@ class State {
   accessToken$: BehaviorSubject<string> = new BehaviorSubject(null);
   refreshToken$: BehaviorSubject<string> = new BehaviorSubject(null);
 
-  constructor() {
+  constructor(private readonly hashingService: HashingService) {
     this.loadInitData();
   }
 
   private loadInitData(): void {
-    this.refreshToken$.next(localStorage.getItem(REFRESH_TOKEN));
+    if (localStorage.getItem(REFRESH_TOKEN)) {
+      this.refreshToken$.next(
+        this.hashingService.decrypt(localStorage.getItem(REFRESH_TOKEN))
+      );
+    }
   }
 }
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly apollo: Apollo = inject(Apollo);
-  private readonly state = new State();
+  private readonly hashingService: HashingService = inject(HashingService);
+  private readonly state = new State(this.hashingService);
 
   private get _currentUser$(): BehaviorSubject<User> {
     return this.state.currentUser$;
@@ -116,7 +121,14 @@ export class AuthService {
   }
 
   setRefreshToken(refreshToken: string): void {
-    localStorage.setItem(REFRESH_TOKEN, refreshToken);
+    if (refreshToken) {
+      localStorage.setItem(
+        REFRESH_TOKEN,
+        this.hashingService.encrypt(refreshToken)
+      );
+    } else {
+      localStorage.removeItem(REFRESH_TOKEN);
+    }
     this._resfreshToken$.next(refreshToken);
   }
 
@@ -174,6 +186,7 @@ export class AuthService {
           return throwError(() => error);
         }),
         tap((response) => {
+          console.log(response);
           this.setAccessToken(response.data.refreshTokens.accessToken);
           this.setRefreshToken(response.data.refreshTokens.refreshToken);
           this.setCurrentUser(

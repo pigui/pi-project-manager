@@ -19,7 +19,7 @@ export const authGuard: CanActivateFn = (route, state) => {
           if (!isLogged) {
             const refreshTokens: RefreshTokenInput = plainToClass(
               RefreshTokenInput,
-              refreshToken
+              { refreshToken }
             );
             return authService
               .refreshTokens(refreshTokens)

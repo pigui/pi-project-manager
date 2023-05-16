@@ -4,6 +4,7 @@ import { authGuard } from './guards/auth/auth.guard';
 export const privateRoutes: Routes = [
   {
     canActivate: [authGuard],
+    canActivateChild: [authGuard],
     path: '',
     loadComponent: () =>
       import('./private.layout').then((m) => m.PrivateLayout),

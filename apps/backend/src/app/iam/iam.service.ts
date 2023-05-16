@@ -5,6 +5,7 @@ import { User } from '../users/schemas';
 import { RefreshTokensCommand, SignUpCommand } from './cqrs/commands/impl';
 import { AccessToken } from './models';
 import { SignInCommand } from './cqrs/commands/impl/sign-in.command';
+import { InvalidateRefreshTokenCommand } from './cqrs/commands/impl/invalidate-refresh-token.command';
 
 @Injectable()
 export class IamService {
@@ -20,5 +21,11 @@ export class IamService {
 
   refreshTokens(refreshToken: string): Promise<AccessToken> {
     return this.commandBus.execute(new RefreshTokensCommand(refreshToken));
+  }
+
+  logout(userId: string): Promise<string> {
+    return this.commandBus.execute(
+      new InvalidateRefreshTokenCommand(userId, true)
+    );
   }
 }

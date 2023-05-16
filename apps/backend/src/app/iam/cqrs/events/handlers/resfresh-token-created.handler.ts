@@ -11,8 +11,8 @@ export class RefreshTokenCreatedHandler
   ) {}
   async handle({
     userId,
-    refreshToken,
+    refreshTokenId,
   }: RefreshTokenCreatedEvent): Promise<void> {
-    await this.refreshTokenIdsStorage.insert(userId, refreshToken);
+    await this.refreshTokenIdsStorage.insert(userId, refreshTokenId);
   }
 }

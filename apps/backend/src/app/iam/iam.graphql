@@ -20,9 +20,21 @@ input RefreshTokenInput {
     refreshToken: String!
 }
 
+input LogoutInput {
+    userId: String!
+}
+
 
 type Mutation {
     signIn(signInInput: SignInInput!): AccessToken!
     signUp(signUpInput: SignUpInput!): User!
-    refreshTokens(refreshTokenInput:RefreshTokenInput!): AccessToken!
+    refreshTokens(refreshTokenInput: RefreshTokenInput!): AccessToken!
+    logout(logonInput: LogoutInput!): User!
+}
+
+
+type Subscription {
+    userLogout: String!
+    userLogin:  String!
+    userCreated: User!
 }

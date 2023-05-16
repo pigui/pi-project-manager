@@ -12,6 +12,8 @@ export class CryptoService implements HashingService {
   }
 
   decrypt(encryptMessage): string {
-    return AES.decrypt(encryptMessage, this.secretKey).toString();
+    return AES.decrypt(encryptMessage, this.secretKey).toString(
+      CryptoJS.enc.Utf8
+    );
   }
 }

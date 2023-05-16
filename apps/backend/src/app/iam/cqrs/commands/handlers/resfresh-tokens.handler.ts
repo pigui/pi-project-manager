@@ -1,4 +1,9 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import {
+  CommandBus,
+  CommandHandler,
+  EventBus,
+  ICommandHandler,
+} from '@nestjs/cqrs';
 import { RefreshTokensCommand } from '../impl';
 import { JwtService } from '@nestjs/jwt';
 import { Inject, UnauthorizedException } from '@nestjs/common';
@@ -13,6 +18,8 @@ import { User } from '../../../../users/schemas';
 import { Model, Types } from 'mongoose';
 import { AccessToken } from '../../../models';
 import { randomUUID } from 'crypto';
+import { RefreshTokenCreatedEvent } from '../../events/impl';
+import { InvalidateRefreshTokenCommand } from '../impl/invalidate-refresh-token.command';
 
 @CommandHandler(RefreshTokensCommand)
 export class RefreshTokensHandler
@@ -23,7 +30,9 @@ export class RefreshTokensHandler
     @Inject(jwtConfig.KEY)
     private readonly jwtConfiguration: ConfigType<typeof jwtConfig>,
     private readonly refreshTokenIdsStorage: RefreshTokenIdsStorage,
-    @InjectModel(User.name) private readonly userModel: Model<User>
+    @InjectModel(User.name) private readonly userModel: Model<User>,
+    private readonly eventBus: EventBus,
+    private readonly commandBus: CommandBus
   ) {}
   async execute({ resfreshToken }: RefreshTokensCommand): Promise<AccessToken> {
     try {
@@ -44,8 +53,11 @@ export class RefreshTokensHandler
         user._id.toString(),
         refreshTokenId
       );
+
       if (isValid) {
-        await this.refreshTokenIdsStorage.invalidate(user._id.toString());
+        await this.commandBus.execute(
+          new InvalidateRefreshTokenCommand(user._id.toString(), false)
+        );
       } else {
         throw new Error('Refresh token is invalid');
       }
@@ -53,7 +65,6 @@ export class RefreshTokensHandler
       return this.generateTokens(user);
     } catch (err) {
       if (err instanceof InvalidatedRefreshTokenError) {
-        // Take action: notify user that his refresh token might have been stolen?
         throw new UnauthorizedException('Access denied');
       }
       throw new UnauthorizedException();
@@ -81,6 +92,9 @@ export class RefreshTokensHandler
       ),
     ]);
 
+    this.eventBus.publish(
+      new RefreshTokenCreatedEvent(user._id.toString(), refreshTokenId)
+    );
     const accToken: AccessToken = new AccessToken();
     accToken.user = user;
     accToken.accessToken = accessToken;

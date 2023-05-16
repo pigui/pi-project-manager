@@ -10,6 +10,7 @@ import { JwtModule } from '@nestjs/jwt';
 import jwtConfig from './config/jwt.config';
 import { ConfigModule } from '@nestjs/config';
 import { RefreshTokenIdsStorage } from './refresh-token-ids.storage';
+import { PubSubModule } from '../pub-sub/pub-sub.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { RefreshTokenIdsStorage } from './refresh-token-ids.storage';
     CqrsModule,
     ConfigModule.forFeature(jwtConfig),
     JwtModule.registerAsync(jwtConfig.asProvider()),
+    PubSubModule,
   ],
   providers: [
     IamService,
