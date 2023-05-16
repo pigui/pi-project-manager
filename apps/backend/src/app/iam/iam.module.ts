@@ -11,6 +11,8 @@ import jwtConfig from './config/jwt.config';
 import { ConfigModule } from '@nestjs/config';
 import { RefreshTokenIdsStorage } from './refresh-token-ids.storage';
 import { PubSubModule } from '../pub-sub/pub-sub.module';
+import { AccessTokenGuard } from './guards/access-token/access-token.guard';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -28,6 +30,10 @@ import { PubSubModule } from '../pub-sub/pub-sub.module';
       useClass: BcryptService,
     },
     RefreshTokenIdsStorage,
+    {
+      provide: APP_GUARD,
+      useClass: AccessTokenGuard,
+    },
     ...HANDLERS,
   ],
   exports: [...HANDLERS],

@@ -7,6 +7,7 @@ import {
   SignUpInput,
 } from './inputs';
 import { PubSub } from 'graphql-subscriptions';
+import { Public } from './decorators';
 
 @Resolver()
 export class IamResolver {
@@ -15,16 +16,19 @@ export class IamResolver {
     private readonly pubSub: PubSub
   ) {}
 
+  @Public()
   @Mutation('signUp')
   signUp(@Args('signUpInput') signUpInput: SignUpInput) {
     return this.iamService.signUp(signUpInput);
   }
 
+  @Public()
   @Mutation('signIn')
   signIn(@Args('signInInput') signInInput: SignInInput) {
     return this.iamService.signIn(signInInput);
   }
 
+  @Public()
   @Mutation('refreshTokens')
   refreshTokens(
     @Args('refreshTokenInput') { refreshToken }: RefreshTokenInput
