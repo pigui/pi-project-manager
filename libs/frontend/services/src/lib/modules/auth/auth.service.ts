@@ -10,8 +10,8 @@ import {
 import { User } from '../../models';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Apollo, MutationResult } from 'apollo-angular';
-import { SignInInput, SignUpInput } from '../../inputs';
-import { SIGN_IN, SIGN_UP } from './graphql';
+import { RefreshTokenInput, SignInInput, SignUpInput } from '../../inputs';
+import { REFRESH_TOKENS, SIGN_IN, SIGN_UP } from './graphql';
 import { GraphqlTypes } from '@common/graphql';
 import { plainToClass } from 'class-transformer';
 import { HashingService } from '../hashing/hashing.service';
@@ -27,30 +27,29 @@ export interface SignUp {
   signUp: GraphqlTypes.User;
 }
 
+export interface RefreshTokens {
+  refreshTokens: GraphqlTypes.AccessToken;
+}
+
 class State {
   currentUser$: BehaviorSubject<User> = new BehaviorSubject(null);
   isLoading$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   accessToken$: BehaviorSubject<string> = new BehaviorSubject(null);
   refreshToken$: BehaviorSubject<string> = new BehaviorSubject(null);
 
-  constructor(private readonly hashingService: HashingService) {
+  constructor() {
     this.loadInitData();
   }
 
   private loadInitData(): void {
-    if (localStorage.getItem(REFRESH_TOKEN)) {
-      this.refreshToken$.next(
-        this.hashingService.decrypt(localStorage.getItem(REFRESH_TOKEN))
-      );
-    }
+    this.refreshToken$.next(localStorage.getItem(REFRESH_TOKEN));
   }
 }
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly apollo: Apollo = inject(Apollo);
-  private readonly hashingService: HashingService = inject(HashingService);
-  private readonly state = new State(this.hashingService);
+  private readonly state = new State();
 
   private get _currentUser$(): BehaviorSubject<User> {
     return this.state.currentUser$;
@@ -117,10 +116,7 @@ export class AuthService {
   }
 
   setRefreshToken(refreshToken: string): void {
-    localStorage.setItem(
-      REFRESH_TOKEN,
-      this.hashingService.encrypt(refreshToken)
-    );
+    localStorage.setItem(REFRESH_TOKEN, refreshToken);
     this._resfreshToken$.next(refreshToken);
   }
 
@@ -158,6 +154,30 @@ export class AuthService {
           this.setRefreshToken(response.data.signIn.refreshToken);
           this.setCurrentUser(
             plainToClass(User, response.data.signIn.user, {})
+          );
+        })
+      );
+  }
+
+  refreshTokens(
+    refreshTokenInput: RefreshTokenInput
+  ): Observable<MutationResult<RefreshTokens>> {
+    this.setIsLoading(true);
+    return this.apollo
+      .mutate<RefreshTokens, { refreshTokenInput: RefreshTokenInput }>({
+        mutation: REFRESH_TOKENS,
+        variables: { refreshTokenInput },
+      })
+      .pipe(
+        catchError((error) => {
+          this.setIsLoading(false);
+          return throwError(() => error);
+        }),
+        tap((response) => {
+          this.setAccessToken(response.data.refreshTokens.accessToken);
+          this.setRefreshToken(response.data.refreshTokens.refreshToken);
+          this.setCurrentUser(
+            plainToClass(User, response.data.refreshTokens.user, {})
           );
         })
       );

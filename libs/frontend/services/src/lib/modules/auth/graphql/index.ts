@@ -29,3 +29,20 @@ export const SIGN_IN = gql`
     }
   }
 `;
+
+export const REFRESH_TOKENS = gql`
+  mutation RefreshTokens($refreshTokenInput: RefreshTokensInput!) {
+    refreshTokens(refreshTokenInput: $refreshTokenInput) {
+      accessToken
+      refreshToken
+      user {
+        _id
+        email
+        firstName
+        lastName
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;

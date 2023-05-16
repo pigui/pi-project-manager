@@ -31,11 +31,9 @@ export class SignInHandler implements ICommandHandler<SignInCommand> {
       throw new UnauthorizedException('User does not exists');
     }
     const isEqual = await this.hashingService.compare(password, user.password);
-
     if (!isEqual) {
       throw new UnauthorizedException('Password does not match');
     }
-
     return await this.generateTokens(user);
   }
 
@@ -51,7 +49,7 @@ export class SignInHandler implements ICommandHandler<SignInCommand> {
         this.jwtConfiguration.accessTokenTtl,
         { email: user.email }
       ),
-      this.signToken(
+      this.signToken<Partial<User> & { refreshTokenId: string }>(
         user._id.toString(),
         this.jwtConfiguration.refreshTokenTtl,
         {
