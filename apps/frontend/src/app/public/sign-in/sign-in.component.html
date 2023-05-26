@@ -1,16 +1,16 @@
 <pi-form [formGroup]="form" (ngSubmit)="onSubmit()">
     <pi-form-field>
-        <pi-form-label>Email</pi-form-label>
+        <pi-form-label>{{ 'signIn.email' | translate }}</pi-form-label>
         <input type="text" piInput formControlName="email" />
     </pi-form-field>
     <pi-form-field>
-        <pi-form-label>Password</pi-form-label>
+        <pi-form-label>{{ 'signIn.password' | translate }}</pi-form-label>
         <input type="password" piInput formControlName="password" />
     </pi-form-field>
     <pi-button-field>
-        <button type="submit" piButton [disabled]="form.invalid">SIGN IN</button>
+        <button type="submit" piButton [disabled]="form.invalid">{{ 'signIn.submit' | translate | uppercase}}</button>
         <button piButton buttonType="secondary" (click)="goSignUp()">
-            SIGN UP
+            {{ 'signIn.signUp' | translate | uppercase}}
         </button>
     </pi-button-field>
 </pi-form>

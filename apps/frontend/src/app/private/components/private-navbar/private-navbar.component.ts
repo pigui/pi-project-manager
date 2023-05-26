@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  HostBinding,
   Input,
   ViewEncapsulation,
 } from '@angular/core';
@@ -8,6 +9,8 @@ import { CommonModule } from '@angular/common';
 import { PrivateNavbarHeaderComponent } from '../private-navbar-header/private-navbar-header.component';
 import { PrivateNavbarMenuComponent } from '../private-navbar-menu/private-navbar-menu.component';
 import { User } from '@frontend/services';
+
+const STYLES = `w-full`;
 
 @Component({
   selector: 'pi-private-navbar',
@@ -22,5 +25,6 @@ import { User } from '@frontend/services';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PrivateNavbarComponent {
+  @HostBinding('class') className = STYLES;
   @Input() user: User;
 }

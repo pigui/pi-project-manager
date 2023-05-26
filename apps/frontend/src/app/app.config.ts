@@ -10,15 +10,33 @@ import {
 } from '@angular/platform-browser';
 import { CryptoService, HashingService } from '@frontend/services';
 import { APOLLO_OPTIONS, Apollo, ApolloModule } from 'apollo-angular';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { HttpLink } from 'apollo-angular/http';
 import { InMemoryCache, split } from '@apollo/client/core';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { WebSocketLink } from '@apollo/client/link/ws';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http);
+}
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    importProvidersFrom(BrowserModule, ApolloModule, HttpClientModule),
+    importProvidersFrom(
+      BrowserModule,
+      ApolloModule,
+      HttpClientModule,
+      TranslateModule.forRoot({
+        defaultLanguage: 'es',
+        loader: {
+          provide: TranslateLoader,
+          useFactory: HttpLoaderFactory,
+          deps: [HttpClient],
+        },
+      })
+    ),
     provideRouter(appRoutes, withEnabledBlockingInitialNavigation()),
     provideClientHydration(),
     {

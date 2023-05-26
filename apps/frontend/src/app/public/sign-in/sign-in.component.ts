@@ -26,6 +26,7 @@ import { Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { plainToClass } from 'class-transformer';
 import { take } from 'rxjs';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'pi-sign-in',
@@ -40,6 +41,7 @@ import { take } from 'rxjs';
     ReactiveFormsModule,
     ButtonDirective,
     ButtonFieldComponent,
+    TranslateModule,
   ],
   templateUrl: './sign-in.component.html',
   encapsulation: ViewEncapsulation.None,

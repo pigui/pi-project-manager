@@ -31,6 +31,7 @@ import { concatMap, take } from 'rxjs';
 import { plainToClass } from 'class-transformer';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'pi-sign-up',
@@ -45,6 +46,7 @@ import { Router } from '@angular/router';
     ReactiveFormsModule,
     ButtonDirective,
     ButtonFieldComponent,
+    TranslateModule,
   ],
   templateUrl: './sign-up.component.html',
   encapsulation: ViewEncapsulation.None,

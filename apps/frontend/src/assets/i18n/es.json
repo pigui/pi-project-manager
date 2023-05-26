@@ -1,0 +1,17 @@
+{
+    "validation": {},
+    "signIn": {
+        "email": "Email",
+        "password": "Contreaseña",
+        "submit": "Login",
+        "signUp": "Registrar"
+    },
+    "signUp": {
+        "firstName": "Nombre",
+        "lastName": "Apellido",
+        "email": "Email",
+        "password": "Contreaseña",
+        "submit": "Registrar",
+        "signIn": "Login"
+    }
+}

@@ -1,1 +1,5 @@
-<p>private-navbar-menu works!</p>
+<div class="h-4/6 w-full border-t-white border-spacing-1">
+    <ng-container *ngFor="let item of menu">
+        <pi-private-navbar-menu-item [item]="item"></pi-private-navbar-menu-item>
+    </ng-container>
+</div>
