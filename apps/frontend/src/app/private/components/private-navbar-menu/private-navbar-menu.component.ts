@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
 import { PrivateNavbarMenuItemComponent } from '../private-navbar-menu-item/private-navbar-menu-item.component';
 import { NavbarMenuItem } from '../../interfaces';
 
-const STYLES = ``;
+const STYLES = `c-navbar-menu`;
 
 @Component({
   selector: 'pi-private-navbar-menu',

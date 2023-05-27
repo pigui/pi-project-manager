@@ -9,8 +9,6 @@ import {
   signal,
 } from '@angular/core';
 
-const STYLES = `border border-solid w-full h-14 text-white disabled:bg-opacity-70`;
-
 export type ButtonType = 'primary' | 'secondary';
 
 @Directive({
@@ -21,7 +19,7 @@ export class ButtonDirective {
   @Input() set buttonType(val) {
     this.typeColor(val);
   }
-  private style: Signal<string> = signal(STYLES);
+  private style: Signal<string> = signal('c-button');
   private color: WritableSignal<string> = signal('bg-primary-color');
   @HostBinding('class') get className() {
     return computed(() => `${this.style()} ${this.color()}`)();

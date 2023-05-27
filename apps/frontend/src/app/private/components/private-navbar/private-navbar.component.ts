@@ -10,7 +10,7 @@ import { PrivateNavbarHeaderComponent } from '../private-navbar-header/private-n
 import { PrivateNavbarMenuComponent } from '../private-navbar-menu/private-navbar-menu.component';
 import { User } from '@frontend/services';
 
-const STYLES = `w-full`;
+const STYLES = `c-navbar`;
 
 @Component({
   selector: 'pi-private-navbar',

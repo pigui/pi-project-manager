@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-const STYLES = `w-4/12 h-3/6`;
+const STYLES = `c-public-card`;
 
 @Component({
   selector: 'pi-public-card',

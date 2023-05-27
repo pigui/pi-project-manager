@@ -8,7 +8,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { User } from '@frontend/services';
 
-const STYLES = ``;
+const STYLES = `c-navbar-header`;
 @Component({
   selector: 'pi-private-navbar-header',
   standalone: true,

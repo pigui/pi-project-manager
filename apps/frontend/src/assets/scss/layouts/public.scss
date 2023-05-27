@@ -1,0 +1,5 @@
+.ly-public {
+  &__container {
+    @apply bg-gradient-to-r from-primary-color to-secondary-color w-full h-screen flex justify-center items-center;
+  }
+}

@@ -1,13 +1,15 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  HostBinding,
   Input,
-  Signal,
   ViewEncapsulation,
   WritableSignal,
   signal,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
+const STYLES = 'c-full-loading';
 
 @Component({
   selector: 'pi-full-loading',
@@ -18,6 +20,7 @@ import { CommonModule } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FullLoadingComponent {
+  @HostBinding('class') className = STYLES;
   isLoading: WritableSignal<boolean> = signal(false);
   @Input() set loading(val) {
     this.isLoading.set(val);

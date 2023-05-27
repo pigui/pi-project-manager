@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-const STYLES = `text-sm text-primary-color`;
+const STYLES = `c-form-label`;
 
 @Component({
   selector: 'pi-form-label',

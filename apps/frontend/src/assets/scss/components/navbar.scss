@@ -1,0 +1,16 @@
+.c-navbar {
+  &__container {
+    @apply w-screen h-screen grid grid-cols-12;
+  }
+  &-header {
+    @apply h-2/6 w-full flex p-14 justify-center items-start border-b-2 border-white;
+  }
+  &-menu {
+    &__container {
+      @apply h-4/6 w-full border-t-white border-spacing-1;
+    }
+    &-items {
+      @apply min-w-full h-16 border-b-2 border-white bg-opacity-90 flex justify-center items-center text-sm text-white hover:bg-primary-color cursor-pointer;
+    }
+  }
+}

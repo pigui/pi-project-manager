@@ -1,5 +1,4 @@
-<div class="min-w-full h-16 border-t-2 border-b-2 border-w border-white bg-opacity-90 flex justify-center items-center text-sm text-white hover:bg-primary-color cursor-pointer"
-    routerLinkActive="is-active" [routerLink]="item.navigation || null">
+<div class="c-navbar-menu-items__container" routerLinkActive="is-active" [routerLink]="item.navigation || null">
     {{ item.name }}
     <div *ngIf="item.children">
         <ng-container *ngFor="let children of item.children">

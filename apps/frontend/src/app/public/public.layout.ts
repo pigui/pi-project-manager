@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  HostBinding,
   OnInit,
   ViewEncapsulation,
   inject,
@@ -10,16 +11,18 @@ import { RouterModule } from '@angular/router';
 import { PublicCardComponent } from './components/public-card/public-card.component';
 import { AuthService } from '@frontend/services';
 
+const STYLES = 'ly-public';
+
 @Component({
   selector: 'pi-public',
   standalone: true,
   imports: [CommonModule, RouterModule, PublicCardComponent],
   templateUrl: './public.layout.html',
-  styleUrls: ['./public.layout.scss'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PublicLayout implements OnInit {
+  @HostBinding() className = STYLES;
   private readonly authService: AuthService = inject(AuthService);
 
   ngOnInit(): void {
