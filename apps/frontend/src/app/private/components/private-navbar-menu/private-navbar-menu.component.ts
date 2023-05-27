@@ -23,8 +23,13 @@ export class PrivateNavbarMenuComponent {
   menu: NavbarMenuItem[] = [
     {
       id: 'home',
-      name: 'home',
+      name: 'private.menu.home',
       navigation: ['home'],
+    },
+    {
+      id: 'projects',
+      name: 'private.menu.projects',
+      navigation: ['projects'],
     },
   ];
 }

@@ -14,6 +14,11 @@ export const privateRoutes: Routes = [
         loadChildren: () =>
           import('./home/home.routes').then((r) => r.homeRoutes),
       },
+      {
+        path: 'projects',
+        loadChildren: () =>
+          import('./project/project.routes').then((r) => r.projectRoutes),
+      },
     ],
   },
 ];

@@ -1,0 +1,39 @@
+scalar Date
+
+enum ProjectStatus {
+  IN_PROGRESS
+}
+
+type Project {
+  _id: ID!
+  name: String!
+  description: String!
+  owner: User!
+  users: [User!]
+  status: ProjectStatus!
+  createdAt: Date!
+  updatedAt: Date!
+}
+
+input FindProjectByIdInput {
+  _id: ID!
+}
+
+input CreateProjectInput {
+  name: String!
+  description: String!
+}
+
+type Query {
+  findProjects: [Project!]
+  findMyProjects: [Project!]
+  findProjectById(findProjectByIdInput: FindProjectByIdInput!): Project
+}
+
+type Mutation {
+  createProject(createProjectInput: CreateProjectInput): Project
+}
+
+type Subscription {
+  projectCreated: Project!
+}

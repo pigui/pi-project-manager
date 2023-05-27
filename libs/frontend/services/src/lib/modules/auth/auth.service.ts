@@ -186,7 +186,6 @@ export class AuthService {
           return throwError(() => error);
         }),
         tap((response) => {
-          console.log(response);
           this.setAccessToken(response.data.refreshTokens.accessToken);
           this.setRefreshToken(response.data.refreshTokens.refreshToken);
           this.setCurrentUser(

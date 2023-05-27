@@ -8,9 +8,17 @@ import {
   BrowserModule,
   provideClientHydration,
 } from '@angular/platform-browser';
-import { CryptoService, HashingService } from '@frontend/services';
-import { APOLLO_OPTIONS, Apollo, ApolloModule } from 'apollo-angular';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import {
+  AuthInterceptor,
+  CryptoService,
+  HashingService,
+} from '@frontend/services';
+import { APOLLO_OPTIONS, ApolloModule } from 'apollo-angular';
+import {
+  HTTP_INTERCEPTORS,
+  HttpClient,
+  HttpClientModule,
+} from '@angular/common/http';
 import { HttpLink } from 'apollo-angular/http';
 import { InMemoryCache, split } from '@apollo/client/core';
 import { getMainDefinition } from '@apollo/client/utilities';
@@ -76,5 +84,6 @@ export const appConfig: ApplicationConfig = {
       deps: [HttpLink],
     },
     { provide: HashingService, useClass: CryptoService },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
 };

@@ -1,26 +1,26 @@
 scalar Date
 
 input FindUserByIdInput {
-    _id: ID!
+  _id: ID!
 }
 
 input FindUserByEmailInput {
-    email: String!
+  email: String!
 }
 
 type User {
-    _id: String!
-    email: String!
-    password: String
-    googleId: String
-    firstName: String!
-    lastName: String!
-    createdAt: Date!
-    updatedAt: Date!
+  _id: ID!
+  email: String!
+  password: String
+  googleId: String
+  firstName: String!
+  lastName: String!
+  createdAt: Date!
+  updatedAt: Date!
 }
 
 type Query {
-    findUsers: [User!]
-    findUserById(findUserByIdInput: FindUserByIdInput!): User
-    findUserByEmail(findUserByEmailInput: FindUserByEmailInput!): User
+  findUsers: [User!]
+  findUserById(findUserByIdInput: FindUserByIdInput!): User
+  findUserByEmail(findUserByEmailInput: FindUserByEmailInput!): User
 }

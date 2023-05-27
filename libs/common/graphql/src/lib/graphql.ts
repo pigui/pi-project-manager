@@ -8,6 +8,10 @@
 /* tslint:disable */
 /* eslint-disable */
 
+export enum ProjectStatus {
+    IN_PROGRESS = "IN_PROGRESS"
+}
+
 export interface SignInInput {
     email: string;
     password: string;
@@ -26,6 +30,15 @@ export interface RefreshTokenInput {
 
 export interface LogoutInput {
     userId: string;
+}
+
+export interface FindProjectByIdInput {
+    _id: string;
+}
+
+export interface CreateProjectInput {
+    name: string;
+    description: string;
 }
 
 export interface FindUserByIdInput {
@@ -47,12 +60,34 @@ export interface IMutation {
     signUp(signUpInput: SignUpInput): User | Promise<User>;
     refreshTokens(refreshTokenInput: RefreshTokenInput): AccessToken | Promise<AccessToken>;
     logout(logonInput: LogoutInput): User | Promise<User>;
+    createProject(createProjectInput?: Nullable<CreateProjectInput>): Nullable<Project> | Promise<Nullable<Project>>;
 }
 
 export interface ISubscription {
     userLogout(): string | Promise<string>;
     userLogin(): string | Promise<string>;
     userCreated(): User | Promise<User>;
+    projectCreated(): Project | Promise<Project>;
+}
+
+export interface Project {
+    _id: string;
+    name: string;
+    description: string;
+    owner: User;
+    users?: Nullable<User[]>;
+    status: ProjectStatus;
+    createdAt: Date;
+    updatedAt: Date;
+}
+
+export interface IQuery {
+    findProjects(): Nullable<Project[]> | Promise<Nullable<Project[]>>;
+    findMyProjects(): Nullable<Project[]> | Promise<Nullable<Project[]>>;
+    findProjectById(findProjectByIdInput: FindProjectByIdInput): Nullable<Project> | Promise<Nullable<Project>>;
+    findUsers(): Nullable<User[]> | Promise<Nullable<User[]>>;
+    findUserById(findUserByIdInput: FindUserByIdInput): Nullable<User> | Promise<Nullable<User>>;
+    findUserByEmail(findUserByEmailInput: FindUserByEmailInput): Nullable<User> | Promise<Nullable<User>>;
 }
 
 export interface User {
@@ -64,12 +99,6 @@ export interface User {
     lastName: string;
     createdAt: Date;
     updatedAt: Date;
-}
-
-export interface IQuery {
-    findUsers(): Nullable<User[]> | Promise<Nullable<User[]>>;
-    findUserById(findUserByIdInput: FindUserByIdInput): Nullable<User> | Promise<Nullable<User>>;
-    findUserByEmail(findUserByEmailInput: FindUserByEmailInput): Nullable<User> | Promise<Nullable<User>>;
 }
 
 type Nullable<T> = T | null;

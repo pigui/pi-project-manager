@@ -1,7 +1,7 @@
 import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
 import { HashingService } from '../../../hashing/hashing.service';
 import { InjectModel } from '@nestjs/mongoose';
-import { User } from '../../../../users/schemas';
+import { User, UserDocument } from '../../../../users/schemas';
 import { Model } from 'mongoose';
 import { ConflictException } from '@nestjs/common';
 import { SignUpCommand } from '../impl';
@@ -21,7 +21,7 @@ export class SignUpHandler implements ICommandHandler<SignUpCommand> {
     if (findUserByEmail) {
       throw new ConflictException();
     }
-    const user = new this.userModel({
+    const user: UserDocument = new this.userModel({
       ...signUpInput,
       password: await this.hashingService.hash(signUpInput.password),
     });
