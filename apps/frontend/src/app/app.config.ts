@@ -8,6 +8,7 @@ import {
   BrowserModule,
   provideClientHydration,
 } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   AuthInterceptor,
   CryptoService,
@@ -34,6 +35,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     importProvidersFrom(
       BrowserModule,
+      BrowserAnimationsModule,
       ApolloModule,
       HttpClientModule,
       TranslateModule.forRoot({

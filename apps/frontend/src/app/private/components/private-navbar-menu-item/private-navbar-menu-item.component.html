@@ -1,5 +1,6 @@
-<div class="c-navbar-menu-items__container" routerLinkActive="is-active" [routerLink]="item.navigation || null">
-    {{ item.name }}
+<div class="c-navbar-menu-items__container" routerLinkActive="is-active"
+    [routerLink]="!item.children ? item.navigation : null">
+    <span>{{ item.name }}</span>
     <div *ngIf="item.children">
         <ng-container *ngFor="let children of item.children">
             <pi-private-navbar-menu-item [item]="children" [isChildren]="true"></pi-private-navbar-menu-item>

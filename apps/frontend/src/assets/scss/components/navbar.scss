@@ -1,6 +1,12 @@
 .c-navbar {
   &__container {
-    @apply w-screen h-screen grid grid-cols-12;
+    @apply w-screen h-screen grid grid-cols-12 min-h-full min-w-full p-3;
+    &__menu {
+      @apply w-full h-full bg-gradient-to-r from-primary-color to-secondary-color col-span-2 rounded text-white;
+    }
+    &__dashboard {
+      @apply w-full p-14 h-full col-span-10 container;
+    }
   }
   &-header {
     @apply h-2/6 w-full flex p-14 justify-center items-start border-b-2 border-white;
@@ -11,6 +17,12 @@
     }
     &-items {
       @apply min-w-full h-16 border-b-2 border-white bg-opacity-90 flex justify-center items-center text-sm text-white hover:bg-primary-color cursor-pointer;
+      &__container {
+        @apply w-full h-full text-center flex justify-center;
+        span {
+          @apply self-center;
+        }
+      }
     }
   }
 }
