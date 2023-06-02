@@ -23,8 +23,6 @@ export class ProjectComponent {
 
   openDialog(): void {
     this.dialogRef = this.dialog.open(ProjectFormModalComponent, {
-      width: '56.5%',
-      height: '56.5%',
       disableClose: false,
     });
   }
