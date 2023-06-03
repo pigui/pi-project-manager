@@ -18,6 +18,9 @@
     &-items {
       @apply min-w-full h-16 border-b-2 border-white bg-opacity-90 flex justify-center items-center text-sm text-white hover:bg-primary-color cursor-pointer;
       &__container {
+        &.is-active {
+          @apply bg-white text-primary-color border-l-8 border-r-0;
+        }
         @apply w-full h-full text-center flex justify-center;
         span {
           @apply self-center;

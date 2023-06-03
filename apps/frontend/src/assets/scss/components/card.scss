@@ -4,3 +4,10 @@
     @apply w-full min-h-full bg-white bg-opacity-90 p-6;
   }
 }
+
+.c-private-card {
+  @apply w-4/12 h-3/6;
+  &__container {
+    @apply w-full min-h-full bg-white bg-opacity-90 p-6;
+  }
+}
