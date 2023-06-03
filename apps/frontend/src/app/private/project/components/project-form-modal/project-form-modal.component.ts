@@ -7,14 +7,31 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ModalComponent } from '@frontend/ui';
+import {
+  ColumnComponent,
+  FormComponent,
+  FormFieldComponent,
+  FormLabelComponent,
+  GridComponent,
+  InputDirective,
+  ModalComponent,
+} from '@frontend/ui';
 
-const STYLES = '-project-form-modal';
+const STYLES = 'c-project-form-modal';
 
 @Component({
   selector: 'pi-project-form-modal',
   standalone: true,
-  imports: [CommonModule, ModalComponent],
+  imports: [
+    CommonModule,
+    ModalComponent,
+    GridComponent,
+    ColumnComponent,
+    FormFieldComponent,
+    FormComponent,
+    InputDirective,
+    FormLabelComponent,
+  ],
   templateUrl: './project-form-modal.component.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

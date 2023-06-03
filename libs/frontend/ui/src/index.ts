@@ -6,3 +6,5 @@ export * from './lib/directives/button/button.directive';
 export * from './lib/components/form/form.component';
 export * from './lib/components/full-loading/full-loading.component';
 export * from './lib/components/modal/modal.component';
+export * from './lib/components/grid/grid.component';
+export * from './lib/components/column/column.component';
