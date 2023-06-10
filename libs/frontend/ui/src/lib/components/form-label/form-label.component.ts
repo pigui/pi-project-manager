@@ -4,6 +4,8 @@ import {
   HostBinding,
   Signal,
   ViewEncapsulation,
+  WritableSignal,
+  computed,
   signal,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -20,8 +22,16 @@ const STYLES = `c-form-label`;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormLabelComponent {
-  private styles: Signal<string> = signal(STYLES);
+  private readonly styles: Signal<string> = signal(STYLES);
+  private readonly isInvalid: WritableSignal<boolean> = signal(false);
   @HostBinding('class') get className() {
     return this.styles();
+  }
+  @HostBinding('class.invalid') get classNameInvalid() {
+    return this.isInvalid();
+  }
+
+  setInvalid(invalid: boolean): void {
+    this.isInvalid.set(invalid);
   }
 }

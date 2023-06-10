@@ -60,7 +60,7 @@ export class SignUpComponent implements OnInit {
     password: ['', Validators.required],
   });
 
-  destroyRef: DestroyRef = inject(DestroyRef);
+  private readonly destroyRef: DestroyRef = inject(DestroyRef);
   constructor(
     private readonly authService: AuthService,
     private readonly fb: FormBuilder,

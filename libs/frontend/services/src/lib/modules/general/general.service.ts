@@ -33,35 +33,35 @@ export class GeneralService {
   private readonly hashingService: HashingService = inject(HashingService);
   private readonly state = new State(this.hashingService);
 
-  private get _darkTheme$(): BehaviorSubject<boolean> {
+  private get darkThemeSource(): BehaviorSubject<boolean> {
     return this.state.darkTheme$;
   }
 
   get darkTheme$(): Observable<boolean> {
-    return this._darkTheme$.asObservable();
+    return this.darkThemeSource.asObservable();
   }
 
   get darkTheme(): Signal<boolean> {
     return toSignal(this.darkTheme$);
   }
-  get _fullLoading$(): BehaviorSubject<boolean> {
+  get fullLoadingSource(): BehaviorSubject<boolean> {
     return this.state.fullLoading$;
   }
 
   get fullLoading$(): Observable<boolean> {
-    return this._fullLoading$.asObservable();
+    return this.fullLoadingSource.asObservable();
   }
 
   get fullLoading(): Signal<boolean> {
     return toSignal(this.fullLoading$);
   }
 
-  private get _currentPage$(): BehaviorSubject<string> {
+  private get currentPageSource(): BehaviorSubject<string> {
     return this.state.currentPage$;
   }
 
   get currentPage$(): Observable<string> {
-    return this._currentPage$.asObservable();
+    return this.currentPageSource.asObservable();
   }
 
   get currentPage(): Signal<string> {
@@ -70,20 +70,20 @@ export class GeneralService {
 
   setDarkTheme(): void {
     localStorage.setItem(DART_THEME, 'true');
-    this._darkTheme$.next(true);
+    this.darkThemeSource.next(true);
   }
 
   setLightTheme(): void {
     localStorage.setItem(DART_THEME, 'false');
-    this._darkTheme$.next(false);
+    this.darkThemeSource.next(false);
   }
 
   setFullLoading(fullLoading: boolean): void {
-    this._fullLoading$.next(fullLoading);
+    this.fullLoadingSource.next(fullLoading);
   }
 
   setCurrentPage(page: string): void {
     localStorage.setItem(CURRENT_PAGE, this.hashingService.encrypt(page));
-    this._currentPage$.next(page);
+    this.currentPageSource.next(page);
   }
 }

@@ -19,8 +19,8 @@ export class ButtonDirective {
   @Input() set buttonType(val) {
     this.typeColor(val);
   }
-  private style: Signal<string> = signal('c-button');
-  private color: WritableSignal<string> = signal('bg-primary-color');
+  private readonly style: Signal<string> = signal('c-button');
+  private readonly color: WritableSignal<string> = signal('bg-primary-color');
   @HostBinding('class') get className() {
     return computed(() => `${this.style()} ${this.color()}`)();
   }

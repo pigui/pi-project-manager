@@ -16,4 +16,8 @@ export const appRoutes: Route[] = [
     loadChildren: () =>
       import('./private/private.routes').then((r) => r.privateRoutes),
   },
+  {
+    path: '**',
+    redirectTo: '',
+  },
 ];

@@ -8,3 +8,4 @@ export * from './lib/components/full-loading/full-loading.component';
 export * from './lib/components/modal/modal.component';
 export * from './lib/components/grid/grid.component';
 export * from './lib/components/column/column.component';
+export * from './lib/components/form-error/form-error.component';

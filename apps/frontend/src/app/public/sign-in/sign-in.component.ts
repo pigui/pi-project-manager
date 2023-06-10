@@ -52,7 +52,7 @@ export class SignInComponent implements OnInit {
     email: ['', [Validators.required, Validators.email]],
     password: ['', Validators.required],
   });
-  destroyRef: DestroyRef = inject(DestroyRef);
+  private readonly destroyRef: DestroyRef = inject(DestroyRef);
 
   constructor(
     private readonly authService: AuthService,

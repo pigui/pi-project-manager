@@ -26,6 +26,7 @@ import { getMainDefinition } from '@apollo/client/utilities';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { QuillModule } from 'ngx-quill';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -38,6 +39,7 @@ export const appConfig: ApplicationConfig = {
       BrowserAnimationsModule,
       ApolloModule,
       HttpClientModule,
+      QuillModule.forRoot(),
       TranslateModule.forRoot({
         defaultLanguage: 'es',
         loader: {

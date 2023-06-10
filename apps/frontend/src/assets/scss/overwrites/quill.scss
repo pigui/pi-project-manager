@@ -1,0 +1,22 @@
+quill-editor {
+  @apply h-40 max-h-full;
+  .ql-toolbar {
+    @apply bg-secondary-color text-sm text-primary-color shadow-sm placeholder-secondary-color border border-primary-color;
+    .ql-formats {
+      @apply text-sm text-primary-color;
+    }
+  }
+  .ql-editor {
+    @apply bg-white border border-primary-color text-sm text-primary-color shadow-sm placeholder-secondary-color
+    focus:outline-none focus:border-secondary-color focus:ring-2 focus:ring-secondary-color focus:text-secondary-color
+    disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none
+    invalid:border-error-color invalid:text-error-color
+    focus:invalid:border-error-color focus:invalid:ring-error-color;
+  }
+
+  &.ng-invalid.ng-dirty {
+    .ql-editor {
+      @apply text-error-color border border-error-color focus:border-error-color focus:ring-2 focus:ring-error-color focus:outline-none bg-red-100;
+    }
+  }
+}

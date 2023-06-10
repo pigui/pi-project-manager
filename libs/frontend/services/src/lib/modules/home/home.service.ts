@@ -18,12 +18,12 @@ export class HomeService {
   private readonly apollo: Apollo = inject(Apollo);
   private readonly state = new State();
 
-  private get _myProjects$(): BehaviorSubject<Project[]> {
+  private get myProjectsSource(): BehaviorSubject<Project[]> {
     return this.state.myProjects$;
   }
 
   get myProjects$(): Observable<Project[]> {
-    return this._myProjects$.asObservable();
+    return this.myProjectsSource.asObservable();
   }
 
   builMyProjects(destroyRef: DestroyRef): void {
@@ -41,7 +41,7 @@ export class HomeService {
           ApolloQueryResult<{ findProjects: GraphqlTypes.Project[] }>,
           Project[]
         ]) => {
-          this._myProjects$.next([
+          this.myProjectsSource.next([
             ...projects,
             ...response.data.findProjects.map(
               (project) => new Project(project)

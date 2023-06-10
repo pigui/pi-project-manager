@@ -23,18 +23,18 @@ export type ColumnsType = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GridComponent {
-  private _columns: WritableSignal<ColumnsType> = signal(2);
+  private readonly _columns: WritableSignal<ColumnsType> = signal(2);
   @Input() set columns(data: ColumnsType) {
     if (data) {
       this._columns.set(data);
     }
   }
-  private styles: Signal<string> = signal(STYLES);
+  private readonly styles: Signal<string> = signal(STYLES);
   @HostBinding('class') get className() {
     return computed(
       () =>
         `${this.styles()} ${
-          this._columns() ? 'grid-cols-' + this._columns() : ''
+          this._columns() ? `grid-cols-${this._columns().toString()}` : ''
         }`
     )();
   }

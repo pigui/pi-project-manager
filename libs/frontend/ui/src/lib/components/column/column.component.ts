@@ -18,7 +18,7 @@ const STYLES = `c-column`;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ColumnComponent {
-  private styles: Signal<string> = signal(STYLES);
+  private readonly styles: Signal<string> = signal(STYLES);
   @HostBinding('class') get className() {
     return this.styles();
   }

@@ -1,17 +1,17 @@
 <pi-form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <pi-form-field>
+    <pi-form-field key="firstName">
         <pi-form-label>{{ 'signUp.firstName' | translate }}</pi-form-label>
         <input type="text" piInput formControlName="firstName" />
     </pi-form-field>
-    <pi-form-field>
+    <pi-form-field key="lastName">
         <pi-form-label>{{ 'signUp.lastName' | translate }}</pi-form-label>
         <input type="text" piInput formControlName="lastName" />
     </pi-form-field>
-    <pi-form-field>
+    <pi-form-field key="email">
         <pi-form-label>{{ 'signUp.email' | translate }}</pi-form-label>
         <input type="text" piInput formControlName="email" />
     </pi-form-field>
-    <pi-form-field>
+    <pi-form-field key="password">
         <pi-form-label>{{ 'signUp.password' | translate }}</pi-form-label>
         <input type="password" piInput formControlName="password" />
     </pi-form-field>

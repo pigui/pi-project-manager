@@ -7,3 +7,11 @@ export const CREATE_PROJECT = gql`
     }
   }
 `;
+
+export const MY_PROJECTS = gql`
+  query MyProjects {
+    findMyProjects {
+      _id
+    }
+  }
+`;

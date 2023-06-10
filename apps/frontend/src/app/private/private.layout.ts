@@ -3,6 +3,7 @@ import {
   Component,
   HostBinding,
   ViewEncapsulation,
+  inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -21,7 +22,5 @@ const STYLES = 'ly-private';
 })
 export class PrivateLayout {
   @HostBinding('class') className = STYLES;
-  constructor(public readonly authService: AuthService) {
-    this.authService.currentUser$.subscribe(console.log);
-  }
+  readonly authService: AuthService = inject(AuthService);
 }

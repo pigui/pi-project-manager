@@ -1,50 +1,37 @@
 <pi-modal>
-    <pi-form>
-        <pi-grid>
-
+    <pi-form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <pi-grid [columns]="2">
             <pi-column>
-                <pi-form-field>
+                <pi-form-field key="name">
                     <pi-form-label>
-                        test
+                        {{ 'project.create.name' | translate }}
                     </pi-form-label>
-                    <input piInput type="text">
+                    <input piInput type="text" formControlName="name">
                 </pi-form-field>
             </pi-column>
             <pi-column>
-                <pi-form-field>
+                <pi-form-field key="user">
                     <pi-form-label>
-                        test
+                        {{ 'project.create.user' | translate }}
                     </pi-form-label>
-                    <input piInput type="text">
+                    <input piInput type="text" formControlName="user">
                 </pi-form-field>
             </pi-column>
-            <pi-column>
-                <pi-form-field>
-                    <pi-form-label>
-                        test
-                    </pi-form-label>
-                    <input piInput type="text">
-                </pi-form-field>
-            </pi-column>
-            <pi-column>
-                <pi-form-field>
-                    <pi-form-label>
-                        test
-                    </pi-form-label>
-                    <input piInput type="text">
-                </pi-form-field>
-            </pi-column>
-
         </pi-grid>
         <pi-grid [columns]="1">
             <pi-column>
-                <pi-form-field>
+                <pi-form-field key="description">
                     <pi-form-label>
-                        test2
+                        {{ 'project.create.description' | translate }}
                     </pi-form-label>
-                    <input piInput type="text">
+                    <quill-editor formControlName="description"></quill-editor>
                 </pi-form-field>
             </pi-column>
         </pi-grid>
+        <pi-button-field>
+            <button type="submit" piButton [disabled]="form.invalid">{{ 'project.create.submit' | translate |
+                uppercase}}</button>
+
+        </pi-button-field>
     </pi-form>
 </pi-modal>
