@@ -9,9 +9,10 @@ import {
   FindProjectsByOwnerQuery,
   FindProjectsQuery,
 } from './cqrs/queries/impl';
+import { Types } from 'mongoose';
 
 @Injectable()
-export class ProjectService {
+export class ProjectsService {
   constructor(
     private readonly commandBus: CommandBus,
     private readonly queryBus: QueryBus
@@ -19,7 +20,7 @@ export class ProjectService {
 
   createProject(
     createProjectInput: CreateProjectInput,
-    user: User
+    user: User & { _id: Types.ObjectId }
   ): Promise<Project> {
     return this.commandBus.execute(
       new CreateProjectCommand(createProjectInput, user)
@@ -34,7 +35,7 @@ export class ProjectService {
     return this.queryBus.execute(new FindProjectByIdQuery(_id));
   }
 
-  findProjectByOwner(user: User): Promise<Project[]> {
+  findProjectByOwner(user: User & { _id: Types.ObjectId }): Promise<Project[]> {
     return this.queryBus.execute(new FindProjectsByOwnerQuery(user));
   }
 }

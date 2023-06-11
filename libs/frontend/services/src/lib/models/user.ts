@@ -11,6 +11,23 @@ export class User implements GraphqlTypes.User {
   updatedAt: Date;
 
   constructor(data?: Partial<GraphqlTypes.User>) {
-    Object.assign(this, data);
+    const {
+      _id,
+      email,
+      password,
+      googleId,
+      firstName,
+      lastName,
+      createdAt,
+      updatedAt,
+    } = data;
+    this._id = _id;
+    this.email = email;
+    this.password = password;
+    this.googleId = googleId;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.createdAt = createdAt ? new Date(createdAt) : undefined;
+    this.updatedAt = updatedAt ? new Date(updatedAt) : undefined;
   }
 }

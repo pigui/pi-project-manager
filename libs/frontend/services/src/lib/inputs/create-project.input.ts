@@ -4,6 +4,8 @@ export class CreateProjectInput implements GraphqlTypes.CreateProjectInput {
   name: string;
   description: string;
   constructor(data?: Partial<GraphqlTypes.CreateProjectInput>) {
-    Object.assign(this, data);
+    const { name, description } = data;
+    this.name = name;
+    this.description = description;
   }
 }

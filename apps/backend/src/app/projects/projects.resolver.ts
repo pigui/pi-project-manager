@@ -1,38 +1,39 @@
 import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
-import { ProjectService } from './project.service';
+import { ProjectsService } from './projects.service';
 import { CreateProjectInput, FindProjectByIdInput } from './inputs';
 import { ActiveUser } from '../iam/decorators';
 import { User } from '../users/schemas';
 import { PubSub } from 'graphql-subscriptions';
+import { Types } from 'mongoose';
 
 @Resolver()
-export class ProjectResolver {
+export class ProjectsResolver {
   constructor(
-    private readonly projectService: ProjectService,
+    private readonly projectsService: ProjectsService,
     private readonly pubSub: PubSub
   ) {}
 
   @Query('findProjects')
   findProjects() {
-    return this.projectService.findProjects();
+    return this.projectsService.findProjects();
   }
 
   @Query('findProjectById')
   findProjectById(@Args('findProjectByIdInput') { _id }: FindProjectByIdInput) {
-    return this.projectService.findProjectById(_id);
+    return this.projectsService.findProjectById(_id);
   }
 
   @Query('findMyProjects')
-  findMyProjects(@ActiveUser() user: User) {
-    return this.projectService.findProjectByOwner(user);
+  findMyProjects(@ActiveUser() user: User & { _id: Types.ObjectId }) {
+    return this.projectsService.findProjectByOwner(user);
   }
 
   @Mutation('createProject')
   createProject(
     @Args('createProjectInput') createProjectInput: CreateProjectInput,
-    @ActiveUser() user: User
+    @ActiveUser() user: User & { _id: Types.ObjectId }
   ) {
-    return this.projectService.createProject(createProjectInput, user);
+    return this.projectsService.createProject(createProjectInput, user);
   }
 
   @Subscription('projectCreated')

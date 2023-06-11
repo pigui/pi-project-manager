@@ -4,6 +4,8 @@ export class SignInInput implements GraphqlTypes.SignInInput {
   email: string;
   password: string;
   constructor(data?: Partial<GraphqlTypes.SignInInput>) {
-    Object.assign(this, data);
+    const { email, password } = data;
+    this.email = email || undefined;
+    this.password = password || undefined;
   }
 }

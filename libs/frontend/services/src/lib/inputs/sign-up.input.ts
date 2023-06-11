@@ -7,6 +7,10 @@ export class SignUpInput implements GraphqlTypes.SignUpInput {
   lastName: string;
 
   constructor(data?: Partial<GraphqlTypes.SignUpInput>) {
-    Object.assign(this, data);
+    const { email, password, firstName, lastName } = data;
+    this.email = email || undefined;
+    this.password = password || undefined;
+    this.firstName = firstName || undefined;
+    this.lastName = lastName || undefined;
   }
 }

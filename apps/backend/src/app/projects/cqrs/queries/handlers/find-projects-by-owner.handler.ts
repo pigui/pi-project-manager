@@ -12,6 +12,6 @@ export class FindProjectsByOwnerHandler
     @InjectModel(Project.name) private readonly projectModel: Model<Project>
   ) {}
   async execute({ user }: FindProjectsByOwnerQuery): Promise<Project[]> {
-    return await this.projectModel.find({ owner: user });
+    return await this.projectModel.find({ owner: user._id });
   }
 }

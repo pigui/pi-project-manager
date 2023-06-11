@@ -12,9 +12,9 @@ export class Project {
   @Prop()
   description: string;
   @Prop({ type: Types.ObjectId, ref: User.name })
-  owner: User;
+  owner: Types.ObjectId;
   @Prop({ type: [{ type: Types.ObjectId, ref: User.name }] })
-  users: [User];
+  users: Types.ObjectId[];
   @Prop({
     default: GraphqlTypes.ProjectStatus.IN_PROGRESS,
   })

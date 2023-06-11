@@ -28,7 +28,7 @@ import {
   InputDirective,
 } from '@frontend/ui';
 import { concatMap, take } from 'rxjs';
-import { plainToClass } from 'class-transformer';
+import { plainToClass, plainToInstance } from 'class-transformer';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
@@ -81,7 +81,7 @@ export class SignUpComponent implements OnInit {
   onSubmit(): void {
     if (this.form.valid) {
       const { email, firstName, lastName, password } = this.form.getRawValue();
-      const signUpInput: SignUpInput = plainToClass(SignUpInput, {
+      const signUpInput: SignUpInput = new SignUpInput({
         email,
         firstName,
         lastName,
@@ -93,9 +93,7 @@ export class SignUpComponent implements OnInit {
         .pipe(
           take(1),
           concatMap(() =>
-            this.authService.signIn(
-              plainToClass(SignInInput, { email, password })
-            )
+            this.authService.signIn(new SignInInput({ email, password }))
           )
         )
         .subscribe({

@@ -4,6 +4,7 @@ import { User } from './schemas';
 import {
   FindUserByEmailQuery,
   FindUserByIdQuery,
+  FindUsersByIdsQuery,
   FindUsersQuery,
 } from './cqrs/queries/impl';
 
@@ -17,6 +18,10 @@ export class UsersService {
 
   findUserById(_id: string): Promise<User> {
     return this.queryBus.execute(new FindUserByIdQuery(_id));
+  }
+
+  findUsersById(_ids: string[]): Promise<User[]> {
+    return this.queryBus.execute(new FindUsersByIdsQuery(_ids));
   }
 
   findUserByEmail(email: string): Promise<User> {

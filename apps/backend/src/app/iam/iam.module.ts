@@ -36,6 +36,6 @@ import { APP_GUARD } from '@nestjs/core';
     },
     ...HANDLERS,
   ],
-  exports: [...HANDLERS],
+  exports: [...HANDLERS, UsersModule],
 })
 export class IamModule {}

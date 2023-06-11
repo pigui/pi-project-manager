@@ -5,7 +5,6 @@ import {
   BehaviorSubject,
   Observable,
   catchError,
-  pipe,
   take,
   tap,
   throwError,
@@ -14,7 +13,6 @@ import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { CREATE_PROJECT, MY_PROJECTS } from './graphql';
 import { GraphqlTypes } from '@common/graphql';
 import { Project } from '../../models';
-import { plainToClass } from 'class-transformer';
 
 interface CreateProject {
   createProject: GraphqlTypes.Project;
@@ -85,7 +83,7 @@ export class ProjectsService {
       .subscribe((response) => {
         response.data.projects
           ? response.data.projects.forEach((project) => {
-              this.setProject(plainToClass(Project, project, {}));
+              this.setProject(new Project(project));
             })
           : [];
       });
@@ -106,9 +104,7 @@ export class ProjectsService {
           return throwError(() => error);
         }),
         tap((response) => {
-          this.setProject(
-            plainToClass(Project, response.data.createProject, {})
-          );
+          this.setProject(new Project(response.data.createProject));
         })
       );
   }

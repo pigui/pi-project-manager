@@ -8,7 +8,7 @@ import { ApolloDriver } from '@nestjs/apollo';
 import { join } from 'path';
 import { UsersModule } from './users/users.module';
 import { ConfigModule } from '@nestjs/config';
-import { ProjectModule } from './project/project.module';
+import { ProjectsModule } from './projects/projects.module';
 
 @Module({
   imports: [
@@ -24,7 +24,7 @@ import { ProjectModule } from './project/project.module';
     }),
     UsersModule,
     IamModule,
-    ProjectModule,
+    ProjectsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

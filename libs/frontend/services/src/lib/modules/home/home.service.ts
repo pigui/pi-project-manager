@@ -27,6 +27,7 @@ export class HomeService {
   }
 
   builMyProjects(destroyRef: DestroyRef): void {
+    this.myProjectsSource.next([]);
     this.apollo
       .watchQuery<{ findProjects: GraphqlTypes.Project[] }>({
         query: FIND_MY_PROJECTS,

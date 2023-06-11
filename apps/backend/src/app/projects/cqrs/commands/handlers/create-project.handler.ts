@@ -18,7 +18,7 @@ export class CreateProjectHandler
     const project: ProjectDocument = new this.projectModel({
       ...createProjectInput,
     });
-    project.owner = user;
+    project.owner = user._id;
     await project.save();
     return project;
   }

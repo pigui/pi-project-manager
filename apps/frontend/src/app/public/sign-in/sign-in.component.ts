@@ -24,7 +24,6 @@ import {
 import { AuthService, GeneralService, SignInInput } from '@frontend/services';
 import { Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { plainToClass } from 'class-transformer';
 import { take } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -74,7 +73,7 @@ export class SignInComponent implements OnInit {
   onSubmit(): void {
     if (this.form.valid) {
       const { email, password } = this.form.getRawValue();
-      const signInInput: SignInInput = plainToClass(SignInInput, {
+      const signInInput: SignInInput = new SignInInput({
         email,
         password,
       });

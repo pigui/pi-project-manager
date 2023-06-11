@@ -8,6 +8,9 @@ export class AccessToken implements GraphqlTypes.AccessToken {
   constructor(
     data?: Partial<Omit<GraphqlTypes.AccessToken, 'user'> & { user: User }>
   ) {
-    Object.assign(this, data);
+    const { accessToken, refreshToken, user } = data;
+    this.accessToken = accessToken;
+    this.refreshToken = refreshToken;
+    this.user = user;
   }
 }

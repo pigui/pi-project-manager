@@ -29,10 +29,12 @@ import { QuillModule } from 'ngx-quill';
 import { TranslateModule } from '@ngx-translate/core';
 import {
   AuthService,
+  CreateProjectInput,
   GeneralService,
   ProjectsService,
 } from '@frontend/services';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { plainToClass, plainToInstance } from 'class-transformer';
 
 const STYLES = 'c-project-form-modal';
 
@@ -84,6 +86,12 @@ export class ProjectFormModalComponent implements OnInit {
 
   onSubmit(): void {
     if (this.form.valid) {
+      const { name, description } = this.form.getRawValue();
+      const createProjectInput: CreateProjectInput = plainToInstance(
+        CreateProjectInput,
+        { name, description }
+      );
+      this.projectService.createProject(createProjectInput).subscribe();
     }
   }
 }

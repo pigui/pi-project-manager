@@ -14,7 +14,6 @@ import { Apollo, MutationResult } from 'apollo-angular';
 import { RefreshTokenInput, SignInInput, SignUpInput } from '../../inputs';
 import { REFRESH_TOKENS, SIGN_IN, SIGN_UP } from './graphql';
 import { GraphqlTypes } from '@common/graphql';
-import { plainToClass } from 'class-transformer';
 import { HashingService } from '../hashing/hashing.service';
 import { inject } from '@angular/core';
 
@@ -190,9 +189,7 @@ export class AuthService {
         tap((response) => {
           this.setAccessToken(response.data.signIn.accessToken);
           this.setRefreshToken(response.data.signIn.refreshToken);
-          this.setCurrentUser(
-            plainToClass(User, response.data.signIn.user, {})
-          );
+          this.setCurrentUser(new User(response.data.signIn.user));
         })
       );
   }
@@ -215,9 +212,7 @@ export class AuthService {
         tap((response) => {
           this.setAccessToken(response.data.refreshTokens.accessToken);
           this.setRefreshToken(response.data.refreshTokens.refreshToken);
-          this.setCurrentUser(
-            plainToClass(User, response.data.refreshTokens.user, {})
-          );
+          this.setCurrentUser(new User(response.data.refreshTokens.user));
         })
       );
   }
