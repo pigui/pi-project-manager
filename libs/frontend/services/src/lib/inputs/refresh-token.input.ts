@@ -4,7 +4,6 @@ export class RefreshTokenInput implements GraphqlTypes.RefreshTokenInput {
   refreshToken: string;
 
   constructor(data?: Partial<GraphqlTypes.RefreshTokenInput>) {
-    const { refreshToken } = data;
-    this.refreshToken = refreshToken;
+    this.refreshToken = data && data.refreshToken ? data.refreshToken : null;
   }
 }

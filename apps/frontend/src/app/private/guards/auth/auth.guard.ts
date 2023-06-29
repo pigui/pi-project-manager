@@ -16,10 +16,8 @@ export const authGuard: CanActivateFn = (route, state) => {
       return authService.isLogged$.pipe(
         concatMap((isLogged: boolean) => {
           if (!isLogged) {
-            const refreshTokens: RefreshTokenInput = plainToClass(
-              RefreshTokenInput,
-              { refreshToken }
-            );
+            const refreshTokens: RefreshTokenInput = new RefreshTokenInput();
+            refreshTokens.refreshToken = refreshToken;
             return authService
               .refreshTokens(refreshTokens)
               .pipe(concatMap(() => authService.isLogged$))
